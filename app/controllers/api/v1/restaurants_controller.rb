@@ -1,5 +1,6 @@
 class Api::V1::RestaurantsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :set_restaurant, :only=>[:update, :show]
   # respond_to :json
   # before_action :set_restaurants, only:[:create ,:show, :edit, :destroy]
 
@@ -15,11 +16,9 @@ class Api::V1::RestaurantsController < ApplicationController
   end
 
   def update
-    @restaurant = Restaurant.find(params[:id])
-    if @restaurant.update
-      render json: {
-        message: "This quote has been updated successfully."
-        }
+    # @restaurant = Restaurant.find(params[:id])
+    if @restaurant.update(restaurant_params )
+      render json: @restaurant
     else
       render json:{ :errors => @restaurant.errors.full_messages }
     end
@@ -31,8 +30,11 @@ class Api::V1::RestaurantsController < ApplicationController
   end
 
   def show
-    @restaurant = Restaurant.find(params[:id])
     render json: @restaurant
+  end
+
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
   end
 
 private
