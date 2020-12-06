@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
 
@@ -7,7 +8,14 @@ Rails.application.routes.draw do
       resources :restaurants
       resources :dishes
       resources :categories
+
+      devise_scope :user do
+        post "sign_up", to: "registrations#create"
+        post "sign_in", to: "sessions#create" 
+      end
     end
+
   end
+
 
 end
